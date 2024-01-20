@@ -1,0 +1,4 @@
+for f in *.json; do
+    sed -i '.bak' '1s/^/[/' "$f"             
+    echo ']' >> "$f"                        
+done
