@@ -31,7 +31,7 @@ from langchain.document_loaders import WebBaseLoader
 from langchain_openai import OpenAIEmbeddings
 from langchain.schema import StrOutputParser
 from langchain.schema.runnable import RunnablePassthrough
-from openai import OpenAI
+from argo import ArgoWrapper
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 import time
@@ -52,10 +52,10 @@ def clean_text_with_gpt4(text):
     for chunk in chunks:
         try:
             print(chunk)
-            response = client.chat.completions.create(
+            response = client.create_completion(
                 model="gpt-3.5-turbo",  # Assuming using the latest GPT-4 model
-                messages=[{"role": "system", "content": "You are a helpful assistant."},
-                          {"role": "user", "content": f"Please clean up the following text:\n\n{chunk}"}]
+                prompt=f"Please clean up the following text:\n\n{chunk}",
+                role="user"
             )
             print(response)
             cleaned_texts.append(response.choices[0].message.content.strip())
@@ -102,7 +102,7 @@ else:
         url=url, max_depth=2, extractor=lambda x: Soup(x, "html.parser").text
     )
     docs = loader.load()
-    client = OpenAI()
+    client = ArgoWrapper()
     #cleaned_text = clean_text_with_gpt4(docs)
     cleaned_text = process_loaded_docs(docs)
     with open(file_name, 'a', encoding='utf-8') as file:
