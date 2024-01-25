@@ -1,0 +1,22 @@
+[{
+	"schema": [
+		"csvDataResourceSchema.json",
+		"diseaseModelSchema.json",
+		"exceadsSchema.json",
+		"initializationSchema.json",
+		"interventionSchema.json",
+		"jobStatusSchema.json",
+		"mergedSchema.json",
+		"modelAnalyzerSchema.json",
+		"modelScenarioSchema.json",
+		"networkSchema.json",
+		"partitionSchema.json",
+		"patchSimSchema.json",
+		"personTraitDB/schemas/tabular-data-resource.json",
+		"personTraitDB/schemas/dictionary.json",
+		"runParametersSchema.json",
+		"templateSchema.json",
+		"traitsSchema.json",
+		"typeRegistry.json"
+	]
+}]

@@ -1,0 +1,15 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/runParametersSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/runParametersSchema.json",
+  "modelScenario": "self://./interventionExampleModelScenario.json",
+  "startTick": 0,
+  "endTick": 28,
+  "dumpActiveNetwork": {
+    "encoding": "text",
+    "output": "network.dump",
+    "startTick": 5,
+    "endTick": 5,
+    "threshold": 0.0001
+  }
+}
+]

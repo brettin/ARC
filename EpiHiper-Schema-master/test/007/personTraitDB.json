@@ -1,0 +1,50 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/csvDataResourceSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/csvDataResourceSchema.json",
+  "description": "HAI v.0.0.1",
+  "name": "hai",
+  "title": "HAI v.0.0.1",
+  "profile": "tabular-data-resource",
+  "path": "hai_person.csv",
+  "schema": {
+    "fields": [
+      {
+        "title": "Person Id",
+        "name": "pid",
+        "type": "number"
+      },
+      {
+        "title": "Patient",
+        "name": "patient",
+        "type": "string",
+        "constraints": {
+          "enum": [
+            "0",
+            "1"
+          ]
+        }
+      },
+      {
+        "title": "Health Care Worker",
+        "name": "hcw",
+        "type": "string",
+        "constraints": {
+          "enum": [
+            "0",
+            "1"
+          ]
+        }
+      }
+    ],
+    "primaryKey": [
+      "pid"
+    ]
+  },
+  "facets": [
+    {
+      "ann:id": "total",
+      "ann:label": "Total population",
+      "value": 11496
+    }
+  ]
+}]

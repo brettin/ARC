@@ -1,0 +1,6 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/modelAnalyzerSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/modelAnalyzerSchema.json",
+  "diseaseModel": "self://./interventionExampleDiseaseModel.json"
+}
+]

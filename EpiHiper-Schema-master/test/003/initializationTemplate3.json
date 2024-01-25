@@ -1,0 +1,58 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "ann:id": "NumberInitialInfections",
+  "ann:label": "Initial Infections - number",
+  "ann:description": "Initially infect the specified number of individuals.",
+  "template": {
+    "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/initializationSchema.json",
+    "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/initializationSchema.json",
+    "initializations": [
+      {
+        "target": {
+          "elementType": "node",
+          "scope": "local"
+        },
+        "sampling": {
+          "type": "absolute",
+          "number": 70,
+          "sampled": {
+            "foreach": [
+              {
+                "operations": [
+                  {
+                    "target": {
+                      "node": {"property": "healthState"}
+                    },
+                    "operator": "=",
+                    "value": {"healthState": "Isymp"}
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "userInput": [
+    {
+      "ann:id": "NumberOfIndividuals",
+      "ann:label": "Number of individuals to initially infect",
+      "ann:description": "Number of individuals that will be infected at the start of the simulation",
+      "value": ["/template/initializations/1/sampling/number"],
+      "exceads": {}
+    }
+  ],
+  "requirements": [
+    {
+      "value": {"healthState": "Isymp"}
+    }
+  ],
+  "engines": ["EpiHiper"],
+  "exceads": {
+    "requires": {
+      "allOf": ["diseaseModelTemplate1.json"]
+    }
+  }
+}]

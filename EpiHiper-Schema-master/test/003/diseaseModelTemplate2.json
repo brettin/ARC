@@ -1,0 +1,281 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "ann:id": "EbolaModel",
+  "ann:label": "Ebola Virus Disease",
+  "ann:description": "Expanding on Legrand model to accommodate separate states for Dead and Recovered. Also capturing Safe Burials and Community Burials differently. Most dwell times taken from WHO-ERT_NEJM_2014. Otherwise from Legrand_EpiInf_2002",
+  "template": {
+    "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/diseaseModelSchema.json",
+    "states": [
+      {
+        "id": "S",
+        "ann:label": "Susceptible",
+        "infectivity": 0,
+        "susceptibility": 1
+      },
+      {
+        "id": "E",
+        "ann:label": "Exposed",
+        "infectivity": 0,
+        "susceptibility": 0
+      },
+      {
+        "id": "I",
+        "ann:label": "Infectious",
+        "infectivity": 1,
+        "susceptibility": 0
+      },
+      {
+        "id": "Fc",
+        "ann:label": "FuneralCommunity",
+        "infectivity": 0.8,
+        "susceptibility": 0
+      },
+      {
+        "id": "H",
+        "ann:label": "Hospital",
+        "infectivity": 0.3,
+        "susceptibility": 0
+      },
+      {
+        "id": "Fh",
+        "ann:label": "FuneralHospital",
+        "infectivity": 0,
+        "susceptibility": 0
+      },
+      {
+        "id": "Rd",
+        "ann:label": "RemovedDead",
+        "infectivity": 0,
+        "susceptibility": 0
+      },
+      {
+        "id": "Rr",
+        "ann:label": "RemovedRecovered",
+        "infectivity": 0,
+        "susceptibility": 0
+      }
+    ],
+    "initialState": "S",
+    "transmissions": [
+      {
+        "id": "infection_I",
+        "ann:label": "Infection by Infectious",
+        "entryState": "S",
+        "exitState": "E",
+        "contactState": "I",
+        "transmissibility": 1
+      },
+      {
+        "id": "infection_Fc",
+        "ann:label": "Infection during community funeral",
+        "entryState": "S",
+        "exitState": "E",
+        "contactState": "Fc",
+        "transmissibility": 1
+      },
+      {
+        "id": "infection_H",
+        "ann:label": "Infection during hospitalization",
+        "entryState": "S",
+        "exitState": "E",
+        "contactState": "H",
+        "transmissibility": 1
+      }
+    ],
+    "transitions": [
+      {
+        "id": "E_to_I",
+        "ann:label": "Exposed to Infectious",
+        "entryState": "E",
+        "exitState": "I",
+        "probability": 1,
+        "dwellTime": {
+          "normal": {
+            "mean": 9.4,
+            "standardDeviation": 7.4
+          }
+        }
+      },
+      {
+        "id": "I_to_H",
+        "ann:label": "Infectious to Hospital",
+        "entryState": "I",
+        "exitState": "H",
+        "probability": 0.6,
+        "dwellTime": {
+          "normal": {
+            "mean": 5,
+            "standardDeviation": 4.7
+          }
+        }
+      },
+      {
+        "id": "I_to_Fc",
+        "ann:label": "Infectious to FuneralCommunity",
+        "entryState": "I",
+        "exitState": "Fc",
+        "probability": 0.3,
+        "dwellTime": {
+          "normal": {
+            "mean": 7.5,
+            "standardDeviation": 6.8
+          }
+        }
+      },
+      {
+        "id": "I_to_Rr",
+        "ann:label": "Infectious to RemovedRecovered",
+        "entryState": "I",
+        "exitState": "Rr",
+        "probability": 0.1,
+        "dwellTime": {
+          "normal": {
+            "mean": 10,
+            "standardDeviation": 5
+          }
+        }
+      },
+      {
+        "id": "H_to_Fh",
+        "ann:label": "Hospital to FuneralHospital",
+        "entryState": "H",
+        "exitState": "F",
+        "probability": 0.64,
+        "dwellTime": {
+          "normal": {
+            "mean": 4.2,
+            "standardDeviation": 6.4
+          }
+        }
+      },
+      {
+        "id": "H_to_Rr",
+        "ann:label": "Hospital to RemovedRecovered",
+        "entryState": "H",
+        "exitState": "Rr",
+        "probability": 0.36,
+        "dwellTime": {
+          "normal": {
+            "mean": 11.8,
+            "standardDeviation": 6.1
+          }
+        }
+      },
+      {
+        "id": "Fc_to_Rd",
+        "ann:label": "FuneralCommunity to RemovedDead",
+        "entryState": "Fc",
+        "exitState": "Rd",
+        "probability": 1,
+        "dwellTime": {"fixed": 2}
+      },
+      {
+        "id": "Fh_to_Rd",
+        "ann:label": "FuneralHospital to RemovedDead",
+        "entryState": "Fh",
+        "exitState": "Rd",
+        "probability": 1,
+        "dwellTime": {"fixed": 1}
+      }
+    ]
+  },
+  "userInput": [
+    {
+      "ann:id": "FuneralCommunityInfectivity",
+      "ann:label": "Infectivity of FuneralCommunity",
+      "ann:description": "Infectivity of the deceased while they await burial in the community",
+      "value": ["/template/states/4/infectivity"],
+      "exceads": {
+        "minValue": 0,
+        "maxValue": 1
+      }
+    },
+    {
+      "ann:id": "HospitalInfectivity",
+      "ann:label": "Infectivity of Hospital",
+      "ann:description": "Infectivity of individuals that are hospitalized",
+      "value": ["/template/states/5/infectivity"],
+      "exceads": {
+        "minValue": 0,
+        "maxValue": 1
+      }
+    },
+    {
+      "ann:id": "ProbabilityOfInfectiousToHospital",
+      "ann:label": "Probability of Infectious to Hospital",
+      "ann:description": "Probability or Proportion of infectious individuals that are hospitalized.",
+      "value": ["/template/transitions/2/probability"],
+      "exceads": {
+        "minValue": 0,
+        "maxValue": 1,
+        "autoAdjust": {
+          "target": ["/template/transitions/2/probability"],
+          "value": "1.0 - /template/transitions/1/probability - /template/transitions/3/probability"
+        }
+      }
+    },
+    {
+      "ann:id": "ProbabilityOfInfectiousToFuneralCommunity",
+      "ann:label": "Probability of Infectious to FuneralCommunity",
+      "ann:description": "Probability or Proportion of individuals that are infectious who die and are buried in the community.",
+      "value": ["/template/transitions/3/probability"],
+      "exceads": {
+        "minValue": 0,
+        "maxValue": 1,
+        "autoAdjust": {
+          "target": ["/template/transitions/3/probability"],
+          "value": "1.0 - /template/transitions/1/probability - /template/transitions/2/probability"
+        }
+      }
+    },
+    {
+      "ann:id": "ProbabilityOfInfectiousToRemovedRecovered",
+      "ann:label": "Probability of Infectious to RemovedRecovered",
+      "ann:description": "Probability or Proportion of infectious individuals that recover from the disease, without hospitalization",
+      "value": ["/template/transitions/4/probability"],
+      "exceads": {
+        "minValue": 0,
+        "maxValue": 1,
+        "autoAdjust": {
+          "target": ["/template/transitions/1/probability"],
+          "value": "1.0 - /template/transitions/2/probability - /template/transitions/3/probability"
+        }
+      }
+    },
+    {
+      "ann:id": "ProbabilityOfHospitalToFuneralHospital",
+      "ann:label": "Probability of Hospital to FuneralHospital",
+      "ann:description": "Probability or Proportion of hospitalized individuals who die, and are given a *safe and dignified* burial",
+      "value": ["/template/transitions/5/probability"],
+      "exceads": {
+        "minValue": 0,
+        "maxValue": 1,
+        "autoAdjust": {
+          "target": ["/template/transitions/5/probability"],
+          "value": "1.0 - /template/transitions/4/probability"
+        }
+      }
+    },
+    {
+      "ann:id": "ProbabilityOfHospitalToRemovedRecovered",
+      "ann:label": "Probability of Hospital to RemovedRecovered",
+      "ann:description": "Probability or Proportion of hospitalized individuals who recover and are discharged from the hospital.",
+      "value": ["/template/transitions/6/probability"],
+      "exceads": {
+        "minValue": 0,
+        "maxValue": 1,
+        "autoAdjust": {
+          "target": ["/template/transitions/4/probability"],
+          "value": "1.0 - /template/transitions/5/probability"
+        }
+      }
+    }
+  ],
+  "requirements": [],
+  "engines": ["EpiHiper"],
+  "exceads": {
+    "name": "Ebola Virus Disease Model",
+    "shortName": "Ebola"
+  }
+}]

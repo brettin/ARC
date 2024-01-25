@@ -1,0 +1,121 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/csvDataResourceSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/csvDataResourceSchema.json",
+  "description": "Person trait database for Virginia 2017 with age and gender",
+  "name": "virginia",
+  "title": "Virginia 2017 Person Trait DB w/age and gender",
+  "profile": "tabular-data-resource",
+  "path": "Virginia_PersonTrait_EpiHiper_wAgeGender.csv",
+  "schema": {
+    "fields": [
+      {
+        "title": "Person Id",
+        "name": "pid",
+        "type": "number"
+      },
+      {
+        "title": "Household Id",
+        "name": "hid",
+        "type": "number"
+      },
+      {
+        "title": "Age",
+        "name": "age",
+        "type": "integer"
+      },
+      {
+        "title": "Age Group",
+        "name": "age_group",
+        "type": "string",
+        "constraints": {
+          "enum": [
+            "p",
+            "s",
+            "a",
+            "o",
+            "g"
+          ],
+          "enumDescriptions": [
+            {"enum": "p", "description": "Preschool (0-4)"},
+            {"enum": "s", "description": "Students (5-17)"},
+            {"enum": "a", "description": "Adults (18-49)"},
+            {"enum": "o", "description": "Older Adults (50-64)"},
+            {"enum": "g", "description": "Seniors (65+)"}
+          ]
+        }
+      },
+      {
+        "title": "Gender",
+        "name": "gender",
+        "type": "string",
+        "constraints": {
+          "enum": [
+            "1",
+            "2"
+          ],
+          "enumDescriptions": [
+            {"enum": "1", "description": "male"},
+            {"enum": "2", "description": "female"}
+          ]
+        }
+      },
+      {
+        "title": "Home Location Longitude",
+        "name": "home_longitude",
+        "type": "number",
+        "constraints": {
+          "minimum": -180,
+          "maximum": 180
+        }
+      },
+      {
+        "title": "Home Location Latitude",
+        "name": "home_latitude",
+        "type": "number",
+        "constraints": {
+          "minimum": -90,
+          "maximum": 90
+        }
+      }
+    ],
+    "primaryKey": ["pid"]
+  },
+  "facets": [
+    {
+      "ann:id": "AgeGroup",
+      "ann:label": "Age Group",
+      "facets": [
+        {
+          "ann:id": "p",
+          "ann:label": "Preschool (0-4)",
+          "value": 462222
+        },
+        {
+          "ann:id": "s",
+          "ann:label": "Students (5-17)",
+          "value": 1332989
+        },
+        {
+          "ann:id": "a",
+          "ann:label": "Adults (18-49)",
+          "value": 3129319
+        },
+        {
+          "ann:id": "o",
+          "ann:label": "Older Adults (50-64)",
+          "value": 1643118
+        },
+        {
+          "ann:id": "g",
+          "ann:label": "Seniors (65+)",
+          "value": 1153138
+        }
+      ]
+    },
+    {
+      "ann:id": "total",
+      "ann:label": "Total population",
+      "value": 7720786
+    }
+  ]
+}]

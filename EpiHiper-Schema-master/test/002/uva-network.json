@@ -1,0 +1,76 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/networkSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/networkSchema.json",
+  "ann:label": "University of Virginia - Wednesday network",
+  "encoding": "text",
+  "accumulationTime": "24 hours",
+  "timeResolution": 86400,
+  "numberOfNodes": 6835316,
+  "numberOfEdges": 90268294,
+  "sizeofPID": 8,
+  "sizeofActivity": 4,
+  "activityEncoding": {
+    "id": "activityTrait",
+    "features": [
+      {
+        "id": "activityType",
+        "default": "other",
+        "enums": [
+          {"id": "home"},
+          {"id": "work"},
+          {"id": "shop"},
+          {"id": "other"},
+          {"id": "school"},
+          {"id": "college"}
+        ]
+      }
+    ]
+  },
+  "sizeofEdgeTrait": 4,
+  "edgeTraitEncoding": {
+    "id": "edgeTrait",
+    "features": [
+      {
+        "id": "weekDay",
+        "default": "2",
+        "enums": [
+          {
+            "id": "0",
+            "ann:label": "Monday"
+          },
+          {
+            "id": "1",
+            "ann:label": "Tuesday"
+          },
+          {
+            "id": "2",
+            "ann:label": "Wednesday"
+          },
+          {
+            "id": "3",
+            "ann:label": "Thursday"
+          },
+          {
+            "id": "4",
+            "ann:label": "Friday"
+          },
+          {
+            "id": "5",
+            "ann:label": "Saturday"
+          },
+          {
+            "id": "6",
+            "ann:label": "Sunday"
+          }
+        ]
+      }
+    ]
+  },
+  "hasLocationIDField": true,
+  "hasActiveField": false,
+  "hasWeightField": false,
+  "sourceOnlyNodes": [
+    1, 3, 5
+  ]
+}
+]

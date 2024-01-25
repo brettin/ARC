@@ -1,0 +1,110 @@
+#!/usr/bin/env node
+
+/* eslint-disable max-len */
+
+const commander = require('commander');
+const fs = require('fs');
+
+commander
+    .description('Creates or updates the file given as an argument')
+    .usage('[options] <file>')
+    .option('-i --id <id>', 'The id of the job')
+    .option('-n --name <name>', 'The name of the job')
+    .option('-s --status <status>', 'The status of the job', function(val) {
+      val = val.toLowerCase();
+
+      if (val != 'running' && val != 'completed' && val != 'failed') {
+        console.log('ERROR: Status must be one of running, completed, or failed.');
+        process.exit(1);
+      }
+
+      return val;
+    })
+    .option('-p --progress <progress>', 'The progress of the job in percent', function(val) {
+      val = Number(val);
+
+      if (isNaN(val) || val < 0 || 100 < val) {
+        console.log('ERROR: Progress must be between 0 and 100.');
+        process.exit(1);
+      }
+
+      return val;
+    })
+    .option('-d --detail <detail>', 'Detailed status description')
+    .arguments('<file>')
+    .action(function(_file) {
+      commander.file = _file;
+    });
+
+commander.parse(process.argv);
+
+if (typeof commander.file === 'undefined') {
+  console.error('ERROR: A status file to create or modify must be given.');
+  process.exit(1);
+}
+
+let status = {};
+let action = '';
+
+try {
+  status = JSON.parse(fs.readFileSync(commander.file));
+  action = 'has not been modified';
+} catch (err) {
+  if (!commander.id ||
+      !commander.name ||
+      !commander.status ||
+      typeof commander.progress === 'undefined') {
+    console.log('ERROR: Id, name, status, and progress are required.');
+
+    process.exit(1);
+  }
+
+  status.id = commander.id;
+  status.name = commander.name;
+  status.status = commander.status;
+  status.progress = commander.progress;
+  action = 'has been created';
+}
+
+if (commander.id &&
+    status.id != commander.id) {
+  console.log('ERROR: The job id may not be changed.');
+}
+
+if (commander.name &&
+    status.name != commander.name) {
+  status.name = commander.name;
+  action = 'has been modified';
+}
+
+if (commander.status &&
+    status.status != commander.status) {
+  if (status.status != 'running') {
+    console.log('ERROR: The status of a finished job may not be changed.');
+  }
+
+  status.status = commander.status;
+  action = 'has been modified';
+}
+if (commander.progress &&
+    status.progress != commander.progress) {
+  if (commander.progress < status.progress) {
+    console.log('ERROR: The progress must not decrease.');
+    process.exit(1);
+  }
+
+  status.progress = commander.progress;
+  action = 'has been modified';
+}
+
+if (commander.detail &&
+    status.detail != commander.detail) {
+  status.detail = commander.detail;
+  action = 'has been modified';
+} 
+
+fs.writeFile(commander.file, JSON.stringify(status, null, 4), function(err) {
+  if (err) throw err;
+
+  console.log('Status file ' + commander.file + ' ' + action + '.');
+});

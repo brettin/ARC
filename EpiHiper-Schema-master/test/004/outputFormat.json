@@ -1,0 +1,42 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/csvDataResourceSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/csvDataResourceSchema.json",
+  "name": "epihiper_output_format",
+  "title": "EpiHiper Output Format",
+  "description": "The file format produced as primary output of EpiHiper",
+  "profile": "tabular-data-resource",
+  "path": "EpiHiperOutput.csv",
+  "schema": {
+    "fields": [
+      {
+        "name": "tick",
+        "bareNumber": true,
+        "type": "integer",
+        "constraints": {"required": true}
+      },
+      {
+        "name": "pid",
+        "bareNumber": true,
+        "type": "integer",
+        "constraints": {"required": true}
+      },
+      {
+        "name": "exit_state",
+        "type": "string",
+        "constraints": {
+          "pattern": "^(_|[0-9]|[a-z]|[A-Z])+$",
+          "required": true
+        }
+      },
+      {
+        "name": "contact_pid",
+        "bareNumber": true,
+        "type": "integer",
+        "constraints": {"required": true}
+      }
+    ],
+    "missingValues": [
+      "-1"
+    ]
+  }
+}]

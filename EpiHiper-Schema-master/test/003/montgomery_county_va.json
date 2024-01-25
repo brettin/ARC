@@ -1,0 +1,76 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/csvDataResourceSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/csvDataResourceSchema.json",
+  "description": "Person trait database for Montgomery County, Va",
+  "name": "montgomery_county_va",
+  "title": "Montgomery County Virginia Person Trait DB",
+  "profile": "tabular-data-resource",
+  "path": "MontgomeryCounty.csv",
+  "schema": {
+    "fields": [
+      {
+        "title": "Person Id",
+        "name": "pid",
+        "type": "integer"
+      },
+      {
+        "title": "Household Id",
+        "name": "hid",
+        "type": "integer"
+      },
+      {
+        "title": "Age Group",
+        "name": "age_group",
+        "type": "string",
+        "constraints": {
+          "enum": [
+            "0-18",
+            "19-64",
+            "65+"
+          ]
+        }
+      },
+      {
+        "title": "Home Location Longitude",
+        "name": "homex",
+        "type": "number",
+        "constraints": {
+          "minimum": -180,
+          "maximum": 180
+        }
+      },
+      {
+        "title": "Home Location Latitude",
+        "name": "homey",
+        "type": "number",
+        "constraints": {
+          "minimum": -90,
+          "maximum": 90
+        }
+      }
+    ],
+    "primaryKey": ["pid"]
+  },
+  "facets": [
+    {
+      "id": "0_18",
+      "ann:label": "Age Group 0-18",
+      "value": 15527
+    },
+    {
+      "id": "19_64",
+      "ann:label": "Age Group 19-64",
+      "value": 52239
+    },
+    {
+      "id": "65_",
+      "ann:label": "Age Group 65+",
+      "value": 10054
+    },
+    {
+      "id": "total",
+      "ann:label": "Total population",
+      "value": 77820
+    }
+  ]
+}]

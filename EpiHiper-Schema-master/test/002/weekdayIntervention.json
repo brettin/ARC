@@ -1,0 +1,407 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+  "triggers": [
+    {
+      "ann:id": "monday",
+      "trigger": {
+        "left": {
+          "variable": {"idRef": "currentWeekday"}
+        },
+        "operator": "==",
+        "right": {
+          "value": {"number": 0}
+        }
+      },
+      "interventionIds": ["mondayday"]
+    },
+    {
+      "ann:id": "tuesday",
+      "trigger": {
+        "left": {
+          "variable": {"idRef": "currentWeekday"}
+        },
+        "operator": "==",
+        "right": {
+          "value": {"number": 1}
+        }
+      },
+      "interventionIds": ["tuesday"]
+    },
+    {
+      "ann:id": "wednesday",
+      "trigger": {
+        "left": {
+          "variable": {"idRef": "currentWeekday"}
+        },
+        "operator": "==",
+        "right": {
+          "value": {"number": 2}
+        }
+      },
+      "interventionIds": ["wednesday"]
+    },
+    {
+      "ann:id": "thursday",
+      "trigger": {
+        "left": {
+          "variable": {"idRef": "currentWeekday"}
+        },
+        "operator": "==",
+        "right": {
+          "value": {"number": 3}
+        }
+      },
+      "interventionIds": ["thursday"]
+    },
+    {
+      "ann:id": "friday",
+      "trigger": {
+        "left": {
+          "variable": {"idRef": "currentWeekday"}
+        },
+        "operator": "==",
+        "right": {
+          "value": {"number": 4}
+        }
+      },
+      "interventionIds": ["friday"]
+    },
+    {
+      "ann:id": "saturday",
+      "trigger": {
+        "left": {
+          "variable": {"idRef": "currentWeekday"}
+        },
+        "operator": "==",
+        "right": {
+          "value": {"number": 5}
+        }
+      },
+      "interventionIds": ["saturday"]
+    },
+    {
+      "ann:id": "sunday",
+      "trigger": {
+        "left": {
+          "variable": {"idRef": "currentWeekday"}
+        },
+        "operator": "==",
+        "right": {
+          "value": {"number": 6}
+        }
+      },
+      "interventionIds": ["sunday"]
+    }
+  ],
+  "interventions": [
+    {
+      "id": "monday",
+      "target": {
+        "set": {"idRef": "tuesday"}
+      },
+      "once": [
+        {
+          "operations": [
+            {
+              "target": {
+                "variable": {"idRef": "currentWeekday"}
+              },
+              "operator": "=",
+              "value": {"number": 0}
+            }
+          ]
+        }
+      ],
+      "foreach": [
+        {
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": true}
+            }
+          ]
+        },
+        {
+          "delay": 1,
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": false}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tuesday",
+      "target": {
+        "set": {"idRef": "wednesday"}
+      },
+      "once": [
+        {
+          "operations": [
+            {
+              "target": {
+                "variable": {"idRef": "currentWeekday"}
+              },
+              "operator": "=",
+              "value": {"number": 0}
+            }
+          ]
+        }
+      ],
+      "foreach": [
+        {
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": true}
+            }
+          ]
+        },
+        {
+          "delay": 1,
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": false}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wednesday",
+      "target": {
+        "set": {"idRef": "thursday"}
+      },
+      "once": [
+        {
+          "operations": [
+            {
+              "target": {
+                "variable": {"idRef": "currentWeekday"}
+              },
+              "operator": "=",
+              "value": {"number": 0}
+            }
+          ]
+        }
+      ],
+      "foreach": [
+        {
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": true}
+            }
+          ]
+        },
+        {
+          "delay": 1,
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": false}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "thursday",
+      "target": {
+        "set": {"idRef": "friday"}
+      },
+      "once": [
+        {
+          "operations": [
+            {
+              "target": {
+                "variable": {"idRef": "currentWeekday"}
+              },
+              "operator": "=",
+              "value": {"number": 0}
+            }
+          ]
+        }
+      ],
+      "foreach": [
+        {
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": true}
+            }
+          ]
+        },
+        {
+          "delay": 1,
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": false}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "friday",
+      "target": {
+        "set": {"idRef": "saturday"}
+      },
+      "once": [
+        {
+          "operations": [
+            {
+              "target": {
+                "variable": {"idRef": "currentWeekday"}
+              },
+              "operator": "=",
+              "value": {"number": 0}
+            }
+          ]
+        }
+      ],
+      "foreach": [
+        {
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": true}
+            }
+          ]
+        },
+        {
+          "delay": 1,
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": false}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "saturday",
+      "target": {
+        "set": {"idRef": "sunday"}
+      },
+      "once": [
+        {
+          "operations": [
+            {
+              "target": {
+                "variable": {"idRef": "currentWeekday"}
+              },
+              "operator": "=",
+              "value": {"number": 0}
+            }
+          ]
+        }
+      ],
+      "foreach": [
+        {
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": true}
+            }
+          ]
+        },
+        {
+          "delay": 1,
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": false}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sunday",
+      "target": {
+        "set": {"idRef": "monday"}
+      },
+      "once": [
+        {
+          "operations": [
+            {
+              "target": {
+                "variable": {"idRef": "currentWeekday"}
+              },
+              "operator": "=",
+              "value": {"number": 0}
+            }
+          ]
+        }
+      ],
+      "foreach": [
+        {
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": true}
+            }
+          ]
+        },
+        {
+          "delay": 1,
+          "operations": [
+            {
+              "target": {
+                "edge": {"property": "active"}
+              },
+              "operator": "=",
+              "value": {"boolean": false}
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}]

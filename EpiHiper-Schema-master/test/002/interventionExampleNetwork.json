@@ -1,0 +1,36 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/networkSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/networkSchema.json",
+  "ann:label": "Montgomery county, VA (2009) - Daily network",
+  "encoding": "text",
+  "accumulationTime": "24 hours",
+  "timeResolution": 86400,
+  "numberOfNodes": 77571,
+  "numberOfEdges": 4038440,
+  "sizeofPID": 8,
+  "sizeofActivity": 4,
+  "activityEncoding": {
+    "id": "activityTrait",
+    "features": [
+      {
+        "id": "activityType",
+        "default": "other",
+        "enums": [
+          {"id": "home"},
+          {"id": "work"},
+          {"id": "shop"},
+          {"id": "other"},
+          {"id": "school"}
+        ]
+      }
+    ]
+  },
+  "sizeofEdgeTrait": 0,
+  "edgeTraitEncoding": {
+    "id": "edgeTrait",
+    "features": []
+  },
+  "hasLocationIDField": true,
+  "hasActiveField": false,
+  "hasWeightField": false
+}]

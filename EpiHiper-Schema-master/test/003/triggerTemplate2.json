@@ -1,0 +1,138 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "ann:id": "ThresholdInfectedSchoolChildren",
+  "ann:label": "Infected School Children - Number",
+  "ann:description": "Trigger on a the number of symptomatic school children.",
+  "template": {
+    "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+    "sets": [
+      {
+        "id": "schoolChildrenEnteredIsymp",
+        "ann:label": "Nodes which entered state Isymp and are going to school.",
+        "scope": "local",
+        "content": {
+          "operation": "intersection",
+          "sets": [
+            {
+              "set": {"idRef": "triggerTemplate1_enteredIsymp"}
+            },
+            {
+              "elementType": "node",
+              "scope": "local",
+              "operator": "withIncomingEdgeIn",
+              "selector": {
+                "elementType": "edge",
+                "left": {
+                  "edge": {
+                    "property": "sourceActivity",
+                    "feature": "activityType"
+                  }
+                },
+                "operator": "==",
+                "right": {
+                  "value": {
+                    "trait": "activityTrait",
+                    "feature": "activityType",
+                    "enum": "SCHOOL"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "variables": [
+      {
+        "id": "schoolChildrenEnteredIsympCounter",
+        "ann:label": "School age children which are or have been infectious",
+        "scope": "global",
+        "initialValue": 0
+      }
+    ],
+    "triggers": [
+      {
+        "trigger": {
+          "left": {
+            "value": {"number": 500}
+          },
+          "operator": "<=",
+          "right": {
+            "variable": {"idRef": "schoolChildrenEnteredIsympCounter"}
+          }
+        },
+        "interventionIds": []
+      }
+    ],
+    "interventions": [
+      {
+        "$comment": "Count Infective School Age Children",
+        "trigger": {
+          "left": {
+            "sizeof": {
+              "set": {"idRef": "schoolChildrenEnteredIsymp"}
+            }
+          },
+          "operator": ">",
+          "right": {
+            "value": {"number": 0}
+          }
+        },
+        "target": {
+          "set": {"idRef": "schoolChildrenEnteredIsymp"}
+        },
+        "foreach": [
+          {
+            "operations": [
+              {
+                "target": {
+                  "variable": {"idRef": "schoolChildrenEnteredIsympCounter"}
+                },
+                "operator": "+=",
+                "value": {"number": 1}
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "userInput": [
+    {
+      "ann:id": "ThresholdInfectedSchoolChildren",
+      "ann:label": "Infected School Children - Number",
+      "ann:description": "Number school children that are symptomatic.",
+      "value": ["/template/triggers/2/trigger/left/value/number"],
+      "exceads": {}
+    }
+  ],
+  "requirements": [
+    {
+      "set": {"idRef": "triggerTemplate1_enteredIsymp"}
+    },
+    {
+      "value": {"healthState": "Isymp"}
+    },
+    {
+      "property": "sourceActivity",
+      "feature": "activityType"
+    },
+    {
+      "value": {
+        "trait": "activityTrait",
+        "feature": "activityType",
+        "enum": "SCHOOL"
+      }
+    }
+  ],
+  "engines": ["EpiHiper"],
+  "exceads": {
+    "requires": {
+      "allOf": [
+        "nodeTraits.json",
+        "triggerTemplate1.json"
+      ]
+    }
+  }
+}]

@@ -1,0 +1,140 @@
+[{
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+  "variables": [
+    {
+      "id": "schoolClosed",
+      "ann:label": "A value indication whether the school has been closed",
+      "scope": "global",
+      "initialValue": 0
+    }
+  ],
+  "triggers": [],
+  "interventions": [
+    {
+      "$comment": "School Closure (school children)",
+      "id": "intervention_1",
+      "target": {
+        "elementType": "edge",
+        "left": {
+          "edge": {
+            "property": "targetActivity",
+            "feature": "activityType"
+          }
+        },
+        "operator": "==",
+        "right": {
+          "value": {
+            "trait": "activityTrait",
+            "feature": "activityType",
+            "enum": "SCHOOL"
+          }
+        }
+      },
+      "foreach": [
+        {
+          "operations": [
+            {
+              "target": {
+                "edge": {
+                  "property": "active"
+                }
+              },
+              "operator": "=",
+              "value": {
+                "boolean": false
+              }
+            }
+          ]
+        },
+        {
+          "delay": 5,
+          "operations": [
+            {
+              "target": {
+                "edge": {
+                  "property": "active"
+                }
+              },
+              "operator": "=",
+              "value": {
+                "boolean": true
+              }
+            }
+          ]
+        }
+      ],
+      "once": [
+        {
+          "operations": [
+            {
+              "target": {
+                "variable": {
+                  "idRef": "schoolClosed"
+                }
+              },
+              "operator": "=",
+              "value": {
+                "number": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$comment": "School Closure (teacher and other employees)",
+      "id": "intervention_2",
+      "target": {
+        "elementType": "edge",
+        "left": {
+          "edge": {
+            "property": "sourceActivity",
+            "feature": "activityType"
+          }
+        },
+        "operator": "==",
+        "right": {
+          "value": {
+            "trait": "activityTrait",
+            "feature": "activityType",
+            "enum": "SCHOOL"
+          }
+        }
+      },
+      "foreach": [
+        {
+          "operations": [
+            {
+              "target": {
+                "edge": {
+                  "property": "active"
+                }
+              },
+              "operator": "=",
+              "value": {
+                "boolean": false
+              }
+            }
+          ]
+        },
+        {
+          "delay": 5,
+          "operations": [
+            {
+              "target": {
+                "edge": {
+                  "property": "active"
+                }
+              },
+              "operator": "=",
+              "value": {
+                "boolean": true
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+]

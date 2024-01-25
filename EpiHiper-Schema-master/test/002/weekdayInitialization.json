@@ -1,0 +1,226 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/initializationSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/initializationSchema.json",
+  "variables": [
+    {
+      "id": "currentWeekDay",
+      "scope": "local",
+      "initialValue": 0,
+      "reset": 7
+    }
+  ],
+  "sets": [
+    {
+      "id": "monday",
+      "scope": "local",
+      "content": {
+        "elementType": "edge",
+        "scope": "local",
+        "left": {
+          "edge": {
+            "property": "edgeTrait",
+            "feature": "weekday"
+          }
+        },
+        "operator": "==",
+        "right": {
+          "value": {
+            "trait": "edgeTrait",
+            "feature": "weekday",
+            "enum": "monday"
+          }
+        }
+      }
+    },
+    {
+      "id": "tuesday",
+      "scope": "local",
+      "content": {
+        "elementType": "edge",
+        "scope": "local",
+        "left": {
+          "edge": {
+            "property": "edgeTrait",
+            "feature": "weekday"
+          }
+        },
+        "operator": "==",
+        "right": {
+          "value": {
+            "trait": "edgeTrait",
+            "feature": "weekday",
+            "enum": "tuesday"
+          }
+        }
+      }
+    },
+    {
+      "id": "wednesday",
+      "scope": "local",
+      "content": {
+        "elementType": "edge",
+        "scope": "local",
+        "left": {
+          "edge": {
+            "property": "edgeTrait",
+            "feature": "weekday"
+          }
+        },
+        "operator": "==",
+        "right": {
+          "value": {
+            "trait": "edgeTrait",
+            "feature": "weekday",
+            "enum": "wednesday"
+          }
+        }
+      }
+    },
+    {
+      "id": "thursday",
+      "scope": "local",
+      "content": {
+        "elementType": "edge",
+        "scope": "local",
+        "left": {
+          "edge": {
+            "property": "edgeTrait",
+            "feature": "weekday"
+          }
+        },
+        "operator": "==",
+        "right": {
+          "value": {
+            "trait": "edgeTrait",
+            "feature": "weekday",
+            "enum": "thursday"
+          }
+        }
+      }
+    },
+    {
+      "id": "friday",
+      "scope": "local",
+      "content": {
+        "elementType": "edge",
+        "scope": "local",
+        "left": {
+          "edge": {
+            "property": "edgeTrait",
+            "feature": "weekday"
+          }
+        },
+        "operator": "==",
+        "right": {
+          "value": {
+            "trait": "edgeTrait",
+            "feature": "weekday",
+            "enum": "friday"
+          }
+        }
+      }
+    },
+    {
+      "id": "saturday",
+      "scope": "local",
+      "content": {
+        "elementType": "edge",
+        "scope": "local",
+        "left": {
+          "edge": {
+            "property": "edgeTrait",
+            "feature": "weekday"
+          }
+        },
+        "operator": "==",
+        "right": {
+          "value": {
+            "trait": "edgeTrait",
+            "feature": "weekday",
+            "enum": "saturday"
+          }
+        }
+      }
+    },
+    {
+      "id": "sunday",
+      "scope": "local",
+      "content": {
+        "elementType": "edge",
+        "scope": "local",
+        "left": {
+          "edge": {
+            "property": "edgeTrait",
+            "feature": "weekday"
+          }
+        },
+        "operator": "==",
+        "right": {
+          "value": {
+            "trait": "edgeTrait",
+            "feature": "weekday",
+            "enum": "sunday"
+          }
+        }
+      }
+    }
+  ],
+  "initializations": [
+    {
+      "ann:id": "deactivateNonStartDays",
+      "target": {
+        "operation": "union",
+        "sets": [
+          {
+            "set": {"idRef": "tuesday"}
+          },
+          {
+            "set": {"idRef": "wednesday"}
+          },
+          {
+            "set": {"idRef": "thursday"}
+          },
+          {
+            "set": {"idRef": "friday"}
+          },
+          {
+            "set": {"idRef": "saturday"}
+          },
+          {
+            "set": {"idRef": "sunday"}
+          }
+        ]
+      },
+      "once": [
+        {
+          "operations": [
+            {
+              "target": {
+                "variable": {"idRef": "currentWeekDay"}
+              },
+              "operator": "=",
+              "value": {"number": 0}
+            }
+          ]
+        }
+      ],
+      "foreach": [
+        {
+          "operations": [
+            {
+              "target": {
+                "edge": {
+                  "property": "active"
+                }
+              },
+              "operator": "=",
+              "value": {
+                "boolean": false
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}]

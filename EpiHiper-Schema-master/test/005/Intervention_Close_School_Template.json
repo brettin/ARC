@@ -1,0 +1,196 @@
+[{
+  "$schema": "https://raw.githubusercontent.com//NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "ann:id": "SchoolClosure",
+  "ann:label": "School Closure",
+  "ann:description": "School closure for a given time which removes interactions that occur at the school",
+  "template": {
+    "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+    "variables": [
+      {
+        "id": "schoolClosed",
+        "ann:label": "A value indication whether the school has been closed",
+        "scope": "global",
+        "initialValue": 0
+      }
+    ],
+    "triggers": [],
+    "interventions": [
+      {
+        "$comment": "School Closure (school children)",
+        "id": "intervention_1",
+        "target": {
+          "elementType": "edge",
+          "left": {
+            "edge": {
+              "property": "targetActivity",
+              "feature": "activityType"
+            }
+          },
+          "operator": "==",
+          "right": {
+            "value": {
+              "trait": "activityTrait",
+              "feature": "activityType",
+              "enum": "SCHOOL"
+            }
+          }
+        },
+        "foreach": [
+          {
+            "operations": [
+              {
+                "target": {
+                  "edge": {
+                    "property": "active"
+                  }
+                },
+                "operator": "=",
+                "value": {
+                  "boolean": false
+                }
+              }
+            ]
+          },
+          {
+            "delay": 14,
+            "operations": [
+              {
+                "target": {
+                  "edge": {
+                    "property": "active"
+                  }
+                },
+                "operator": "=",
+                "value": {
+                  "boolean": true
+                }
+              }
+            ]
+          }
+        ],
+        "once": [
+          {
+            "operations": [
+              {
+                "target": {
+                  "variable": {
+                    "idRef": "schoolClosed"
+                  }
+                },
+                "operator": "=",
+                "value": {
+                  "number": 1
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "$comment": "School Closure (teacher and other employees)",
+        "id": "intervention_2",
+        "target": {
+          "elementType": "edge",
+          "left": {
+            "edge": {
+              "property": "sourceActivity",
+              "feature": "activityType"
+            }
+          },
+          "operator": "==",
+          "right": {
+            "value": {
+              "trait": "activityTrait",
+              "feature": "activityType",
+              "enum": "SCHOOL"
+            }
+          }
+        },
+        "foreach": [
+          {
+            "operations": [
+              {
+                "target": {
+                  "edge": {
+                    "property": "active"
+                  }
+                },
+                "operator": "=",
+                "value": {
+                  "boolean": false
+                }
+              }
+            ]
+          },
+          {
+            "delay": 14,
+            "operations": [
+              {
+                "target": {
+                  "edge": {
+                    "property": "active"
+                  }
+                },
+                "operator": "=",
+                "value": {
+                  "boolean": true
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "userInput": [
+    {
+      "ann:id": "DaysSchoolClosed",
+      "ann:label": "Duration of School Closure",
+      "ann:description": "Number of days the schools remain closed",
+      "value": [
+        "/template/interventions/1/foreach/2/delay",
+        "/template/interventions/2/foreach/2/delay"
+      ],
+      "exceads": {
+        "minValue": 1,
+        "maxValue": 999,
+        "sweep": true,
+        "calibrate": false
+      }
+    }
+  ],
+  "requirements": [
+    {
+      "property": "targetActivity",
+      "feature": "activityType"
+    },
+    {
+      "value": {
+        "trait": "activityTrait",
+        "feature": "activityType",
+        "enum": "SCHOOL"
+      }
+    }
+  ],
+  "engines": ["EpiHiper"],
+  "exceads": {
+    "requires": {
+      "allOff": [
+        {
+          "oneOf": [
+            "montgomery_county_2009.txt",
+            "montgomery_county_2009.bin"
+          ]
+        },
+        {
+          "oneOf": [
+            "interventionTemplate1.json",
+            "interventionTemplate2.json"
+          ]
+        }
+      ]
+    },
+    "interventionType": "SCHOOL_CLOSURE"
+  }
+}]

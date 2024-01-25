@@ -1,0 +1,172 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "ann:id": "FluVacination",
+  "ann:label": "Flu Vacination by Age Group",
+  "ann:description": "Seasonal influenza vaccination and age-specific effectiveness.",
+  "template": {
+    "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/initializationSchema.json",
+    "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/initializationSchema.json",
+    "initializations": [
+      {
+        "target": {
+          "elementType": "node",
+          "scope": "local",
+          "left": {
+            "field": "age_group"
+          },
+          "operator": "==",
+          "right": {"value": "0-18"}
+        },
+        "sampling": {
+          "type": "individual",
+          "number": 70,
+          "sampled": {
+            "foreach": [
+              {
+                "operations": [
+                  {
+                    "target": {
+                      "node": {"property": "infectivityFactor"}
+                    },
+                    "operator": "*=",
+                    "value": {"number": 0.8}
+                  },
+                  {
+                    "target": {
+                      "node": {"property": "susceptibilityFactor"}
+                    },
+                    "operator": "*=",
+                    "value": {"number": 0.8}
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "target": {
+          "elementType": "node",
+          "scope": "local",
+          "left": {
+            "field": "age_group"
+          },
+          "operator": "==",
+          "right": {"value": "19-64"}
+        },
+        "sampling": {
+          "type": "individual",
+          "number": 30,
+          "sampled": {
+            "foreach": [
+              {
+                "operations": [
+                  {
+                    "target": {
+                      "node": {"property": "infectivityFactor"}
+                    },
+                    "operator": "*=",
+                    "value": {"number": 0.8}
+                  },
+                  {
+                    "target": {
+                      "node": {"property": "susceptibilityFactor"}
+                    },
+                    "operator": "*=",
+                    "value": {"number": 0.8}
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "target": {
+          "elementType": "node",
+          "scope": "local",
+          "left": {
+            "field": "age_group"
+          },
+          "operator": "==",
+          "right": {"value": "65+"}
+        },
+        "sampling": {
+          "type": "individual",
+          "number": 50,
+          "sampled": {
+            "foreach": [
+              {
+                "operations": [
+                  {
+                    "target": {
+                      "node": {"property": "infectivityFactor"}
+                    },
+                    "operator": "*=",
+                    "value": {"number": 0.8}
+                  },
+                  {
+                    "target": {
+                      "node": {"property": "susceptibilityFactor"}
+                    },
+                    "operator": "*=",
+                    "value": {"number": 0.8}
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "userInput": [
+    {
+      "ann:id": "VaccinationRate0_18",
+      "ann:label": "Vaccination Rate for Age Group 0-18",
+      "ann:description": "Proportion of individuals in the Age Group 0-18 vaccinated",
+      "value": ["/template/initializations/1/sampling/number"],
+      "exceads": {}
+    },
+    {
+      "ann:id": "VaccinationRate19_64",
+      "ann:label": "Vaccination Rate for Age Group 19-64",
+      "ann:description": "Proportion of individuals in the Age Group 19-64 vaccinated",
+      "value": ["/template/initializations/2/sampling/number"],
+      "exceads": {}
+    },
+    {
+      "ann:id": "VaccinationRate65_",
+      "ann:label": "Vaccination Rate for Age Group 65+",
+      "ann:description": "Proportion of individuals in the Age Group 65+ vaccinated",
+      "value": ["/template/initializations/3/sampling/number"],
+      "exceads": {}
+    },
+    {
+      "ann:id": "VaccineEffectiveness",
+      "ann:label": "Effectiveness of the vaccine",
+      "ann:description": "A number with which the current infectivities and succebtibilites of vaccinated individuals are multiplied",
+      "value": [
+        "/template/initializations/1/sampling/sampled/foreach/operations/1/value/number",
+        "/template/initializations/1/sampling/sampled/foreach/operations/2/value/number",
+        "/template/initializations/2/sampling/sampled/foreach/operations/1/value/number",
+        "/template/initializations/2/sampling/sampled/foreach/operations/2/value/number",
+        "/template/initializations/3/sampling/sampled/foreach/operations/1/value/number",
+        "/template/initializations/3/sampling/sampled/foreach/operations/2/value/number"
+      ],
+      "exceads": {}
+    }
+  ],
+  "requirements": [
+    {
+      "field": "age_group"
+    }
+  ],
+  "engines": ["EpiHiper"],
+  "exceads": {
+    "requires": {
+      "allOf": ["montgomery_county_va.json"]
+    }
+  }
+}]

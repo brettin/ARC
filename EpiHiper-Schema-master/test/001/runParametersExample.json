@@ -1,0 +1,7 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/runParametersSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/runParametersSchema.json",
+  "modelScenario": "self://./modelScenarioExample.json",
+  "startTick": 0,
+  "endTick": 28
+}]

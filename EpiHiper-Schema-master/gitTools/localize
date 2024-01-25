@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+git stash
+
+case $1 in
+  --revert)
+    echo revert localization
+    git config --unset filter.localize.clean
+    git config --unset filter.localize.smudge
+    ;;
+  
+  *)
+    echo initialize localization
+    echo ---------------------------------------------------------------
+    echo This only works if one use git command line
+    echo please use: gitTools/localize --revert before using other tools
+    echo ---------------------------------------------------------------
+    git config filter.localize.clean "$(git rev-parse --show-toplevel)/gitTools/localize.py clean $(git rev-parse --show-toplevel)"
+    git config filter.localize.smudge "$(git rev-parse --show-toplevel)/gitTools/localize.py smudge $(git rev-parse --show-toplevel)"
+    ;;
+esac
+
+find $(git rev-parse --show-toplevel) -iname "*.json" -delete
+git checkout -- $(git rev-parse --show-toplevel)
+
+git stash pop

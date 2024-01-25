@@ -1,0 +1,13 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/modelScenarioSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/modelScenarioSchema.json",
+  "contactNetwork": "self://./va_montgomery_2009.txt",
+  "diseaseModel": "self://./interventionExampleDiseaseModel.json",
+  "initialization": "self://./interventionExampleInitialization.json",
+  "intervention": "self://./interventionExampleIntervention.json",
+  "personTraitDB": [
+    "self://./interventionExamplePersonTraitDB.json",
+    "self://./interventionExampleLocationTraitDB.json"
+  ],
+  "traits": "self://./interventionExampleTraits.json"
+}]

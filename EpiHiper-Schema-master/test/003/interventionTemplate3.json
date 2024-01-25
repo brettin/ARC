@@ -1,0 +1,220 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "ann:id": "Prophylax",
+  "ann:label": "Prophylax Treatment of Household Members",
+  "ann:description": "For identified cases provide prophylactic treatment to their household members",
+  "template": {
+    "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+    "sets": [],
+    "variables": [],
+    "triggers": [],
+    "interventions": [
+      {
+        "$comment": "Prophylax",
+        "id": "interventionTemplate3_1",
+        "target": {
+          "elementType": "node",
+          "scope": "local",
+          "left": {
+            "field": "hid"
+          },
+          "operator": "in",
+          "right": {
+            "elementType": "dbField",
+            "field": "hid",
+            "selector": {
+              "set": {"idRef": "triggerTemplate4_prophylaxTrue"}
+            }
+          }
+        },
+        "foreach": [
+          {
+            "condition": {
+              "and": [
+                {
+                  "left": {
+                    "node": {"property": "healthState"}
+                  },
+                  "operator": "in",
+                  "right": {
+                    "valueList": {
+                      "healthState": [
+                        "S",
+                        "E",
+                        "I"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "left": {
+                    "node": {
+                      "property": "nodeTrait",
+                      "feature": "prophylax"
+                    }
+                  },
+                  "operator": "==",
+                  "right": {
+                    "value": {
+                      "trait": "nodeTrait",
+                      "feature": "prophylax",
+                      "enum": "false"
+                    }
+                  }
+                }
+              ]
+            },
+            "operations": [
+              {
+                "target": {
+                  "node": {"property": "susceptibilityFactor"}
+                },
+                "operator": "*=",
+                "value": {"number": 0.4}
+              },
+              {
+                "target": {
+                  "node": {
+                    "property": "nodeTrait",
+                    "feature": "prophylax"
+                  }
+                },
+                "operator": "=",
+                "value": {
+                  "trait": "nodeTrait",
+                  "feature": "prophylax",
+                  "enum": "true"
+                }
+              }
+            ]
+          },
+          {
+            "delay": 5,
+            "condition": {
+              "left": {
+                "node": {
+                  "property": "nodeTrait",
+                  "feature": "prophylax"
+                }
+              },
+              "operator": "==",
+              "right": {
+                "value": {
+                  "trait": "nodeTrait",
+                  "feature": "prophylax",
+                  "enum": "true"
+                }
+              }
+            },
+            "operations": [
+              {
+                "target": {
+                  "node": {"property": "susceptibilityFactor"}
+                },
+                "operator": "/=",
+                "value": {"number": 0.4}
+              },
+              {
+                "target": {
+                  "node": {
+                    "property": "nodeTrait",
+                    "feature": "prophylax"
+                  }
+                },
+                "operator": "=",
+                "value": {
+                  "trait": "nodeTrait",
+                  "feature": "prophylax",
+                  "enum": "false"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "userInput": [
+    {
+      "ann:id": "DaysTreatment",
+      "ann:label": "Days of Treatment",
+      "ann:description": "Number days for the prophylactic treatment",
+      "value": ["/template/internentions/1/foreach/2/delay"],
+      "exceads": {}
+    },
+    {
+      "ann:id": "ProphylaxEffectiveness",
+      "ann:label": "Effectiveness of Treatment",
+      "ann:description": "The effectiveness of the prophylactic treatment",
+      "value": [
+        "/template/interventions/1/foreach/1/operations/1/value/number",
+        "/template/interventions/1/foreach/2/operations/1/value/number"
+      ],
+      "exceads": {}
+    }
+  ],
+  "requirements": [
+    {
+      "set": {"idRef": "triggerTemplate4_prophylaxTrue"}
+    },
+    {
+      "property": "nodeTrait",
+      "feature": "prophylax"
+    },
+    {
+      "value": {
+        "trait": "nodeTrait",
+        "feature": "prophylax",
+        "enum": "true"
+      }
+    },
+    {
+      "value": {
+        "trait": "nodeTrait",
+        "feature": "prophylax",
+        "enum": "false"
+      }
+    },
+    {
+      "field": "hid"
+    },
+    {
+      "property": "nodeTrait",
+      "feature": "prophylaxTrigger"
+    },
+    {
+      "value": {
+        "trait": "nodeTrait",
+        "feature": "prophylaxTrigger",
+        "enum": "true"
+      }
+    }
+  ],
+  "engines": ["EpiHiper"],
+  "exceads": {
+    "input": [
+      {
+        "ann:id": "HouseholdIfTable",
+        "ann:label": "Table containing Household",
+        "ann:description": "??",
+        "value": [
+          "/template/interventions/1/target/left/table",
+          "/template/interventions/1/target/right/table",
+          "/requirements/4/table"
+        ],
+        "exceads": {}
+      }
+    ],
+     "engines": ["EpiHiper"],
+     "exceads": {
+      "requires": {
+        "allOf": [
+          "interventionTemplate2.json",
+          "montgomery_county_va.json"
+        ]
+      }
+    }
+  }
+}
+]

@@ -1,0 +1,373 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "ann:id": "Treatment",
+  "ann:label": "Treatment of Symptomatic Individuals",
+  "ann:description": "Treatment for individuals, both early health care seekers and late health care seekers, with limits on total doses per day and overall supply",
+  "template": {
+    "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+    "variables": [
+      {
+        "id": "totalTreatments",
+        "ann:label": "Total Treatments",
+        "scope": "global",
+        "initialValue": 0
+      },
+      {
+        "id": "dailyTreatments",
+        "ann:label": "Daily Treatments",
+        "scope": "global",
+        "initialValue": 0,
+        "reset": 1
+      }
+    ],
+    "triggers": [],
+    "interventions": [
+      {
+        "$comment": "Treatment",
+        "id": "interventionTemplate2_1",
+        "target": {
+          "set": {"idRef": "enteredIsymp"}
+        },
+        "sampling": {
+          "type": "individual",
+          "number": 30,
+          "sampled": {
+            "foreach": [
+              {
+                "delay": 1,
+                "condition": {
+                  "and": [
+                    {
+                      "left": {
+                        "variable": {"idRef": "dailyTreatments"}
+                      },
+                      "operator": "<",
+                      "right": {
+                        "value": {"number": 500}
+                      }
+                    },
+                    {
+                      "left": {
+                        "variable": {"idRef": "totalTreatments"}
+                      },
+                      "operator": "<",
+                      "right": {
+                        "value": {"number": 20000}
+                      }
+                    }
+                  ]
+                },
+                "operations": [
+                  {
+                    "target": {
+                      "variable": {"idRef": "dailyTreatments"}
+                    },
+                    "operator": "+=",
+                    "value": {"number": 1}
+                  },
+                  {
+                    "target": {
+                      "variable": {"idRef": "totalTreatments"}
+                    },
+                    "operator": "+=",
+                    "value": {"number": 1}
+                  },
+                  {
+                    "target": {
+                      "node": {"property": "infectivityFactor"}
+                    },
+                    "operator": "*=",
+                    "value": {"number": 0.2}
+                  },
+                  {
+                    "target": {
+                      "node": {
+                        "property": "nodeTrait",
+                        "feature": "treatment"
+                      }
+                    },
+                    "operator": "=",
+                    "value": {
+                      "trait": "nodeTrait",
+                      "feature": "treatment",
+                      "enum": "true"
+                    }
+                  },
+                  {
+                    "target": {
+                      "node": {
+                        "property": "nodeTrait",
+                        "feature": "prophylaxTrigger"
+                      }
+                    },
+                    "operator": "=",
+                    "value": {
+                      "trait": "nodeTrait",
+                      "feature": "prophylaxTrigger",
+                      "enum": "true"
+                    }
+                  }
+                ]
+              },
+              {
+                "delay": 6,
+                "condition": {
+                  "left": {
+                    "node": {
+                      "property": "nodeTrait",
+                      "feature": "treatment"
+                    }
+                  },
+                  "operator": "==",
+                  "right": {
+                    "value": {
+                      "trait": "nodeTrait",
+                      "feature": "treatment",
+                      "enum": "true"
+                    }
+                  }
+                },
+                "operations": [
+                  {
+                    "target": {
+                      "node": {"property": "infectivityFactor"}
+                    },
+                    "operator": "/=",
+                    "value": {"number": 0.2}
+                  },
+                  {
+                    "target": {
+                      "node": {
+                        "property": "nodeTrait",
+                        "feature": "treatment"
+                      }
+                    },
+                    "operator": "=",
+                    "value": {
+                      "trait": "nodeTrait",
+                      "feature": "treatment",
+                      "enum": "false"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "nonsampled": {
+            "sampling": {
+              "type": "individual",
+              "number": 20,
+              "sampled": {
+                "foreach": [
+                  {
+                    "delay": 3,
+                    "condition": {
+                      "and": [
+                        {
+                          "left": {
+                            "variable": {"idRef": "dailyTreatments"}
+                          },
+                          "operator": "<",
+                          "right": {
+                            "value": {"number": 500}
+                          }
+                        },
+                        {
+                          "left": {
+                            "variable": {"idRef": "totalTreatments"}
+                          },
+                          "operator": "<",
+                          "right": {
+                            "value": {"number": 20000}
+                          }
+                        }
+                      ]
+                    },
+                    "operations": [
+                      {
+                        "target": {
+                          "variable": {"idRef": "dailyTreatments"}
+                        },
+                        "operator": "+=",
+                        "value": {"number": 1}
+                      },
+                      {
+                        "target": {
+                          "variable": {"idRef": "totalTreatments"}
+                        },
+                        "operator": "+=",
+                        "value": {"number": 1}
+                      },
+                      {
+                        "target": {
+                          "node": {"property": "infectivityFactor"}
+                        },
+                        "operator": "*=",
+                        "value": {"number": 0.2}
+                      },
+                      {
+                        "target": {
+                          "node": {
+                            "property": "nodeTrait",
+                            "feature": "treatment"
+                          }
+                        },
+                        "operator": "=",
+                        "value": {
+                          "trait": "nodeTrait",
+                          "feature": "treatment",
+                          "enum": "true"
+                        }
+                      },
+                      {
+                        "target": {
+                          "node": {
+                            "property": "nodeTrait",
+                            "feature": "prophylaxTrigger"
+                          }
+                        },
+                        "operator": "=",
+                        "value": {
+                          "trait": "nodeTrait",
+                          "feature": "prophylaxTrigger",
+                          "enum": "true"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "delay": 8,
+                    "condition": {
+                      "left": {
+                        "node": {
+                          "property": "nodeTrait",
+                          "feature": "treatment"
+                        }
+                      },
+                      "operator": "==",
+                      "right": {
+                        "value": {
+                          "trait": "nodeTrait",
+                          "feature": "treatment",
+                          "enum": "true"
+                        }
+                      }
+                    },
+                    "operations": [
+                      {
+                        "target": {
+                          "node": {"property": "infectivityFactor"}
+                        },
+                        "operator": "/=",
+                        "value": {"number": 0.2}
+                      },
+                      {
+                        "target": {
+                          "node": {
+                            "property": "nodeTrait",
+                            "feature": "treatment"
+                          }
+                        },
+                        "operator": "=",
+                        "value": {
+                          "trait": "nodeTrait",
+                          "feature": "treatment",
+                          "enum": "false"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "userInput": [
+    {
+      "ann:id": "EarlyTreatmentResponseRate",
+      "ann:label": "Early Treatment Response Rate",
+      "ann:description": "Proportion of symptomatic individuals that seek care and get treatments as soon as they are infectious",
+      "value": ["/template/interventions/1/sampling/number"],
+      "exceads": {}
+    },
+    {
+      "ann:id": "LateTreatmentResponseRate",
+      "ann:label": "Late Treatment Response Rate",
+      "ann:description": "Poportion of symptomatic individuals who didn't seek early care that get it 3 days after becoming infectious",
+      "value": ["/template/interventions/1/sampling/nonsampled/sampling/number"],
+      "exceads": {}
+    },
+    {
+      "ann:id": "DailyAvailableTreatment",
+      "ann:label": "Daily Available Treatment Regimens",
+      "ann:description": "Number of treatment regimens that can be dispensed in a single day",
+      "value": [
+        "/template/interventions/1/sampling/sampled/foreach/condition/and/1/right/value/number",
+        "/template/interventions/1/sampling/nonsampled/sampling/sampled/foreach/condition/and/1/right/value/number"
+      ],
+      "exceads": {}
+    },
+    {
+      "ann:id": "TotalAvailableTreatment",
+      "ann:label": "Total Available Treatment",
+      "ann:description": "Total treatment regimens available throughout the course of the simulation",
+      "value": [
+        "/template/interventions/1/sampling/sampled/foreach/condition/and/2/right/value/number",
+        "/template/interventions/1/sampling/nonsampled/sampling/sampled/foreach/condition/and/2/right/value/number"
+      ],
+      "exceads": {}
+    }
+  ],
+  "requirements": [
+    {
+      "set": {"idRef": "enteredIsymp"}
+    },
+    {
+      "property": "nodeTrait",
+      "feature": "treatment"
+    },
+    {
+      "value": {
+        "trait": "nodeTrait",
+        "feature": "treatment",
+        "enum": "true"
+      }
+    },
+    {
+      "value": {
+        "trait": "nodeTrait",
+        "feature": "treatment",
+        "enum": "false"
+      }
+    },
+    {
+      "property": "nodeTrait",
+      "feature": "prophylaxTrigger"
+    },
+    {
+      "value": {
+        "trait": "nodeTrait",
+        "feature": "prophylaxTrigger",
+        "enum": "true"
+      }
+    },
+    {
+      "value": {
+        "trait": "nodeTrait",
+        "feature": "prophylaxTrigger",
+        "enum": "false"
+      }
+    }
+  ],
+  "engines": ["EpiHiper"],
+  "exceads": {
+    "requires": {
+      "allOf": ["triggerTemplate1.json"]
+    }
+  }
+}
+]

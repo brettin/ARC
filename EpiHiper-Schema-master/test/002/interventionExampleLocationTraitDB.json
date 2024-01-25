@@ -1,0 +1,44 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/csvDataResourceSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/csvDataResourceSchema.json",
+  "description": "Location Trait Database Example",
+  "name": "location_trait_db_example",
+  "title": "Location Trait Database Example",
+  "profile": "tabular-data-resource",
+  "path": "locationTraitDBExample.csv",
+  "schema": {
+    "fields": [
+      {
+        "title": "Location Id",
+        "name": "lid",
+        "type": "integer"
+      },
+      {
+        "title": "Location Longitude",
+        "name": "location_longitude",
+        "type": "number",
+        "constraints": {
+          "minimum": -180,
+          "maximum": 180
+        }
+      },
+      {
+        "title": "Location Latitude",
+        "name": "location_latitude",
+        "type": "number",
+        "constraints": {
+          "minimum": -90,
+          "maximum": 90
+        }
+      }
+    ],
+    "primaryKey": ["lid"]
+  },
+  "facets": [
+    {
+      "ann:id": "total",
+      "ann:label": "Total Contacts",
+      "value": 877820
+    }
+  ]
+}]

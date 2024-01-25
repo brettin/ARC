@@ -1,0 +1,69 @@
+#!/usr/bin/env node
+
+// BEGIN: Copyright
+// Copyright (C) 2019 Rector and Visitors of the University of Virginia
+// All rights reserved
+// END: Copyright
+
+// BEGIN: License
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//   http://www.apache.org/licenses/LICENSE-2.0
+// END: License
+
+/* eslint-disable max-len */
+
+const pkg = require('../package.json');
+const commander = require('commander');
+const EpiHiperAddNoise = require('../lib/epiHiperAddNoise');
+
+let files;
+
+commander
+  .version(pkg.version)
+  .description('EpiHiper Add Noise')
+  .usage('[options] <file ...>')
+  .option('-p --path [path]', 'JSONPath to be modified.')
+  .option('-d --distribution [distribution]', 'distribution to use [normal|uniform|fixed]')
+  .option('-s --sigma <sigma>', 'standard deviation of normal distribution.')
+  .option('--min <min>', 'minimum of uniform distribution.')
+  .option('--max <min>', 'maximum of uniform distribution.')
+  .option('-v --value <value>', 'value of fixed distribution.')
+  .option('-i --integer', 'specify whether the value is of type integer.', false)
+  .option('-r --replace', 'replace input files.', false)
+  .option('-n --negative', 'allow negative numbers.', false)
+  .arguments('<files...>')
+  .action(function (_files) {
+    files = _files;
+  });
+
+commander.parse(process.argv);
+
+try {
+  if (commander.path === undefined) {
+    throw ('Missing option: -p --path [path]  JSONPath to be modified');
+  }
+
+  if (commander.distribution === undefined) {
+    throw ('Missing option: -d --distribution [distribution]  distribution to use [normal|uniform|fixed]');
+  }
+
+  if (commander.distribution == 'normal' && isNaN(commander.sigma === undefined)) {
+    throw ('Missing option: -s --sigma <sigma>  standard deviation of normal distribution.');
+  } else if (commander.distribution == 'uniform' && commander.min === undefined) {
+    throw ('Missing option: --min <min>  minimum of uniform distribution.');
+  } else if (commander.distribution == 'uniform' && commander.max === undefined) {
+    throw ('Missing option: --max <min>  maximum of uniform distribution.');
+  } else if (commander.distribution == 'fixed' && commander.value === undefined) {
+    throw ('Missing option: -v --value <value>  value of fixed distribution.');
+  }
+
+  EpiHiperAddNoise.fromCommander(commander).process(files)
+    .then((result) => {
+      process.exit(result ? 0 : 1);
+    });
+} catch (err) {
+  console.log(err + '\n');
+  commander.help();
+}

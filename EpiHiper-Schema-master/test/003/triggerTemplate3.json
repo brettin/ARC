@@ -1,0 +1,38 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "ann:id": "DayTrigger",
+  "ann:label": "Trigger at a specified Day",
+  "ann:description": "Trigger based on a specific day of the simulation.",
+  "template": {
+    "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+    "triggers": [
+      {
+        "trigger": {
+          "left": {
+            "observable": "time"
+          },
+          "operator": "==",
+          "right": {
+            "value": {"number": 5}
+          }
+        },
+        "interventionIds": []
+      }
+    ],
+    "interventions": []
+  },
+  "userInput": [
+    {
+      "ann:id": "TriggerDay",
+      "ann:label": "Day",
+      "ann:description": "Specific simulation day to trigger the intervention.",
+      "value": ["/template/triggers/1/trigger/right/value/number"],
+      "exceads": {}
+    }
+  ],
+  "requirements": [],
+  "engines": ["EpiHiper"],
+  "exceads": {}
+}
+]

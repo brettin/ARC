@@ -1,0 +1,136 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "ann:id": "NewlySymptomaticIndividuals",
+  "ann:label": "Newly Symptomatic Individuals",
+  "ann:description": "Helper trigger for counting and tagging people entering Isymp",
+  "template": {
+    "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+    "sets": [
+      {
+        "id": "triggerTemplate1_enteredIsymp",
+        "ann:label": "Nodes which entered state Isymp.",
+        "scope": "local",
+        "content": {
+          "operation": "intersection",
+          "sets": [
+            {
+              "elementType": "node",
+              "scope": "local",
+              "left": {
+                "node": {"property": "healthState"}
+              },
+              "operator": "==",
+              "right": {
+                "value": {"healthState": "Isymp"}
+              }
+            },
+            {
+              "elementType": "node",
+              "scope": "local",
+              "left": {
+                "node": {
+                  "property": "nodeTrait",
+                  "feature": "enteredIsymp"
+                }
+              },
+              "operator": "==",
+              "right": {
+                "value": {
+                  "trait": "nodeTrait",
+                  "feature": "enteredIsymp",
+                  "enum": "false"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "trigger": {
+          "left": {
+            "sizeof": {
+              "set": {"idRef": "triggerTemplate1_enteredIsymp"}
+            }
+          },
+          "operator": ">",
+          "right": {
+            "value": {"number": 0}
+          }
+        },
+        "interventionIds": []
+      }
+    ],
+    "interventions": [
+      {
+        "$comment": "Mark indiviudal as having entered previously",
+        "trigger": {
+          "left": {
+            "sizeof": {
+              "set": {"idRef": "triggerTemplate1_enteredIsymp"}
+            }
+          },
+          "operator": ">",
+          "right": {
+            "value": {"number": 0}
+          }
+        },
+        "target": {
+          "set": {"idRef": "triggerTemplate1_enteredIsymp"}
+        },
+        "foreach": [
+          {
+            "operations": [
+              {
+                "target": {
+                  "node": {
+                    "property": "nodeTrait",
+                    "feature": "enteredIsymp"
+                  }
+                },
+                "operator": "=",
+                "value": {
+                  "trait": "nodeTrait",
+                  "feature": "enteredIsymp",
+                  "enum": "true"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "userInput": [],
+  "requirements": [
+    {
+      "value": {"healthState": "Isymp"}
+    },
+    {
+      "property": "nodeTrait",
+      "feature": "enteredIsymp"
+    },
+    {
+      "value": {
+        "trait": "nodeTrait",
+        "feature": "enteredIsymp",
+        "enum": "true"
+      }
+    },
+    {
+      "value": {
+        "trait": "nodeTrait",
+        "feature": "enteredIsymp",
+        "enum": "false"
+      }
+    }
+  ],
+  "engines": ["EpiHiper"],
+  "exceads": {
+    "requires": {
+      "allOf": ["nodeTraits.json"]
+    }
+  }
+}]

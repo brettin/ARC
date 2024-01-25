@@ -1,0 +1,72 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/traitsSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/traitsSchema.json",
+  "traits": [
+    {
+      "id": "nodeTrait",
+      "ann:label": "Node Trait",
+      "features": [
+        {
+          "id": "enteredIsymp",
+          "ann:label": "Entered State Isym",
+          "enums": [
+            {
+              "id": "true",
+              "ann:label": "true"
+            },
+            {
+              "id": "false",
+              "ann:label": "false"
+            }
+          ],
+          "default": "false"
+        },
+        {
+          "id": "treatment",
+          "ann:label": "Treatment",
+          "enums": [
+            {
+              "id": "true",
+              "ann:label": "true"
+            },
+            {
+              "id": "false",
+              "ann:label": "false"
+            }
+          ],
+          "default": "false"
+        },
+        {
+          "id": "prophylaxTrigger",
+          "ann:label": "Prophylax Trigger",
+          "enums": [
+            {
+              "id": "true",
+              "ann:label": "true"
+            },
+            {
+              "id": "false",
+              "ann:label": "false"
+            }
+          ],
+          "default": "false"
+        },
+        {
+          "id": "prophylax",
+          "ann:label": "Prophylax",
+          "enums": [
+            {
+              "id": "true",
+              "ann:label": "true"
+            },
+            {
+              "id": "false",
+              "ann:label": "false"
+            }
+          ],
+          "default": "false"
+        }
+      ]
+    }
+  ]
+}]

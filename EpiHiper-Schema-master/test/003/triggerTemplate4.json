@@ -1,0 +1,108 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/templateSchema.json",
+  "ann:id": "ProphylaxTrigger",
+  "ann:label": "Trigger Prophylax for Household Memebers",
+  "ann:description": "Helper trigger for accounting who should be prophylaxed?",
+  "template": {
+    "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+    "sets": [
+      {
+        "id": "triggerTemplate4_prophylaxTrue",
+        "ann:label": "Nodes for which trigger prohylax is true.",
+        "scope": "local",
+        "content": {
+          "elementType": "node",
+          "scope": "local",
+          "left": {
+            "node": {
+              "property": "nodeTrait",
+              "feature": "prophylaxTrigger"
+            }
+          },
+          "operator": "==",
+          "right": {
+            "value": {
+              "trait": "nodeTrait",
+              "feature": "prophylaxTrigger",
+              "enum": "true"
+            }
+          }
+        }
+      }
+    ],
+    "triggers": [
+      {
+        "trigger": {
+          "left": {
+            "sizeof": {
+              "set": {"idRef": "triggerTemplate4_prophylaxTrue"}
+            }
+          },
+          "operator": ">",
+          "right": {
+            "value": {"number": 0}
+          }
+        },
+        "interventionIds": ["triggerTemplate4_1"]
+      }
+    ],
+    "interventions": [
+      {
+        "$comment": "Mark indiviudal as having trigger prophylax previously",
+        "id": "triggerTemplate4_1",
+        "target": {
+          "set": {"idRef": "triggerTemplate4_prophylaxTrue"}
+        },
+        "foreach": [
+          {
+            "operations": [
+              {
+                "target": {
+                  "node": {
+                    "property": "nodeTrait",
+                    "feature": "prophylaxTrigger"
+                  }
+                },
+                "operator": "=",
+                "value": {
+                  "trait": "nodeTrait",
+                  "feature": "prophylaxTrigger",
+                  "enum": "false"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "userInput": [],
+  "requirements": [
+    {
+      "property": "nodeTrait",
+      "feature": "prophylaxTrigger"
+    },
+    {
+      "value": {
+        "trait": "nodeTrait",
+        "feature": "prophylaxTrigger",
+        "enum": "true"
+      }
+    },
+    {
+      "value": {
+        "trait": "nodeTrait",
+        "feature": "prophylaxTrigger",
+        "enum": "false"
+      }
+    }
+  ],
+  "engines": ["EpiHiper"],
+  "exceads": {
+    "requires": {
+      "allOf": ["nodeTraits.json"]
+    }
+  }
+}
+]

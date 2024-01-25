@@ -1,0 +1,315 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+  "triggers": [
+    {
+      "trigger": {
+        "operator": "==",
+        "left": {
+          "node": {"property": "healthState"}
+        },
+        "right": {
+          "value": {"healthState": "severe"}
+        }
+      },
+      "interventionIds": [
+        "intervention_0",
+        "intervention_3"
+      ]
+    },
+    {
+      "trigger": {
+        "left": {"observable": "time"},
+        "operator": "==",
+        "right": {
+          "value": {"number": 10}
+        }
+      },
+      "interventionIds": ["intervention_1"]
+    },
+    {
+      "trigger": {
+        "left": {
+          "node": {"property": "healthState"}
+        },
+        "operator": "==",
+        "right": {
+          "value": {"healthState": "infectious"}
+        }
+      },
+      "interventionIds": ["intervention_2"]
+    }
+  ],
+  "interventions": [
+    {
+      "$comment": "if the health state is severe put the individual into hospital but only if there are less that 100 individuals in the hospital",
+      "id": "intervention_0",
+      "target": {
+        "elementType": "node",
+        "scope": "local"
+      },
+      "foreach": [
+        {
+          "condition": {
+            "operator": "<",
+            "left": {
+              "observable": {
+                "type": "absolute",
+                "healthState": "hospital"
+              }
+            },
+            "right": {
+              "value": {"number": 100}
+            }
+          },
+          "operations": [
+            {
+              "target": {
+                "node": {"property": "healthState"}
+              },
+              "operator": "=",
+              "value": {"healthState": "hospital"}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$comment": "90% of student in Blacksburg highschool are vaccinated.",
+      "id": "intervention_1",
+      "target": {
+        "elementType": "node",
+        "scope": "local",
+        "table": "Blacksburg_Highschool"
+      },
+      "foreach": [
+        {
+          "operations": [
+            {
+              "target": {
+                "node": {"property": "susceptibilityFactor"}
+              },
+              "operator": "*=",
+              "value": {"number": 0.01}
+            }
+          ]
+        }
+      ],
+      "sampling": {
+        "type": "individual",
+        "number": 90,
+        "sampled": {
+          "foreach": [
+            {
+              "operations": [
+                {
+                  "target": {
+                    "node": {"property": "susceptibilityFactor"}
+                  },
+                  "operator": "*=",
+                  "value": {"number": 0.01}
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "$comments": "If a person becomes infective treat it for 10 days with a red pill",
+      "id": "intervention_2",
+      "target": {
+        "elementType": "node",
+        "scope": "local"
+      },
+      "foreach": [
+        {
+          "operations": [
+            {
+              "target": {
+                "node": {"property": "infectivityFactor"}
+              },
+              "operator": "*=",
+              "value": {"number": 0.6}
+            },
+            {
+              "target": {
+                "node": {
+                  "property": "nodeTrait",
+                  "feature": "treatment"
+                }
+              },
+              "operator": "=",
+              "value": {
+                "trait": "nodeTrait",
+                "feature": "treatment",
+                "enum": "redPill"
+              }
+            }
+          ]
+        },
+        {
+          "delay": 10,
+          "condition": {
+            "operator": "==",
+            "left": {
+              "node": {
+                "property": "nodeTrait",
+                "feature": "treatment"
+              }
+            },
+            "right": {
+              "value": {
+                "trait": "nodeTrait",
+                "feature": "treatment",
+                "enum": "redPill"
+              }
+            }
+          },
+          "operations": [
+            {
+              "target": {
+                "node": {"property": "infectivityFactor"}
+              },
+              "operator": "/=",
+              "value": {"number": 0.6}
+            },
+            {
+              "target": {
+                "node": {
+                  "property": "nodeTrait",
+                  "feature": "treatment"
+                }
+              },
+              "operator": "=",
+              "value": {
+                "trait": "nodeTrait",
+                "feature": "treatment",
+                "enum": "none"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$comments": "If a person becomes severely think infective treat it for 15 days with a blue pill. The blue is incompatible with the read pill.",
+      "id": "intervention_3",
+      "target": {
+        "elementType": "node",
+        "scope": "local"
+      },
+      "foreach": [
+        {
+          "priority": 10,
+          "condition": {
+            "operator": "==",
+            "left": {
+              "node": {
+                "property": "nodeTrait",
+                "feature": "treatment"
+              }
+            },
+            "right": {
+              "value": {
+                "trait": "nodeTrait",
+                "feature": "treatment",
+                "enum": "redPill"
+              }
+            }
+          },
+          "operations": [
+            {
+              "target": {
+                "node": {"property": "infectivityFactor"}
+              },
+              "operator": "/=",
+              "value": {"number": 0.6}
+            },
+            {
+              "target": {
+                "node": {
+                  "property": "nodeTrait",
+                  "feature": "treatment"
+                }
+              },
+              "operator": "=",
+              "value": {
+                "trait": "nodeTrait",
+                "feature": "treatment",
+                "enum": "none"
+              }
+            }
+          ]
+        },
+        {
+          "operations": [
+            {
+              "target": {
+                "node": {"property": "infectivityFactor"}
+              },
+              "operator": "*=",
+              "value": {"number": 0.8}
+            },
+            {
+              "target": {
+                "node": {
+                  "property": "nodeTrait",
+                  "feature": "treatment"
+                }
+              },
+              "operator": "=",
+              "value": {
+                "trait": "nodeTrait",
+                "feature": "treatment",
+                "enum": "bluePill"
+              }
+            }
+          ]
+        },
+        {
+          "delay": 15,
+          "condition": {
+            "operator": "==",
+            "left": {
+              "node": {
+                "property": "nodeTrait",
+                "feature": "treatment"
+              }
+            },
+            "right": {
+              "value": {
+                "trait": "nodeTrait",
+                "feature": "treatment",
+                "enum": "bluePill"
+              }
+            }
+          },
+          "operations": [
+            {
+              "target": {
+                "node": {"property": "infectivityFactor"}
+              },
+              "operator": "/=",
+              "value": {"number": 0.8}
+            },
+            {
+              "target": {
+                "node": {
+                  "property": "nodeTrait",
+                  "feature": "treatment"
+                }
+              },
+              "operator": "=",
+              "value": {
+                "trait": "nodeTrait",
+                "feature": "treatment",
+                "enum": "none"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}]

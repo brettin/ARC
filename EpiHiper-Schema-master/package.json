@@ -1,0 +1,42 @@
+[{
+	"name": "@shoops/epi-hiper-validator",
+	"version": "1.6.0",
+	"description": "EpiHiper input validation and modification utilities",
+	"bin": {
+		"epiHiperValidateSchema": "./bin/epiHiperValidateSchema",
+		"epiHiperValidateRules": "./bin/epiHiperValidateRules",
+		"epiHiperMerge": "./bin/epiHiperMerge",
+		"epiHiperStatus": "./bin/epiHiperStatus",
+		"epiHiperAddNoise": "./bin/epiHiperAddNoise",
+		"epiHiperUpdateConfigs": "./bin/epiHiperUpdateConfigs"
+	},
+	"author": "Stefan Hoops <shoops@virginia.edu>",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"@shoops/jsontron": ">=0.8.24",
+		"ajv": "^6.10.0",
+		"commander": "^2.20.0",
+		"firstline": "^2.0.2",
+		"text-encoding": "^0.7.0"
+	},
+	"devDependencies": {
+		"eslint": "^5.16.0",
+		"eslint-config-google": "^0.13.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/NSSAC/EpiHiper-Schema.git"
+	},
+	"keywords": [
+		"jsonschema",
+		"schematron",
+		"json",
+		"json-validator",
+		"semantic-validator",
+		"rules-engine",
+		"EpiHiper"
+	],
+	"bugs": {
+		"url": "https://github.com/NSSAC/EpiHiper-Schema/issues"
+	}
+}]

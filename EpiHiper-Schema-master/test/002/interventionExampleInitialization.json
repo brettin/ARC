@@ -1,0 +1,142 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/initializationSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/initializationSchema.json",
+  "initializations": [
+    {
+      "target": {
+        "elementType": "node",
+        "scope": "local",
+        "left": {
+          "field": "age_group"
+        },
+        "operator": "==",
+        "right": {"value": "0-18"}
+      },
+      "sampling": {
+        "type": "individual",
+        "number": 70,
+        "sampled": {
+          "foreach": [
+            {
+              "operations": [
+                {
+                  "target": {
+                    "node": {"property": "infectivityFactor"}
+                  },
+                  "operator": "*=",
+                  "value": {"number": 0.8}
+                },
+                {
+                  "target": {
+                    "node": {"property": "susceptibilityFactor"}
+                  },
+                  "operator": "*=",
+                  "value": {"number": 0.8}
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "target": {
+        "elementType": "node",
+        "scope": "local",
+        "left": {
+          "field": "age_group"
+        },
+        "operator": "==",
+        "right": {"value": "19-64"}
+      },
+      "sampling": {
+        "type": "individual",
+        "number": 30,
+        "sampled": {
+          "foreach": [
+            {
+              "operations": [
+                {
+                  "target": {
+                    "node": {"property": "infectivityFactor"}
+                  },
+                  "operator": "*=",
+                  "value": {"number": 0.8}
+                },
+                {
+                  "target": {
+                    "node": {"property": "susceptibilityFactor"}
+                  },
+                  "operator": "*=",
+                  "value": {"number": 0.8}
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "target": {
+        "elementType": "node",
+        "scope": "local",
+        "left": {
+          "field": "age_group"
+        },
+        "operator": "==",
+        "right": {"value": "65+"}
+      },
+      "sampling": {
+        "type": "individual",
+        "number": 50,
+        "sampled": {
+          "foreach": [
+            {
+              "operations": [
+                {
+                  "target": {
+                    "node": {"property": "infectivityFactor"}
+                  },
+                  "operator": "*=",
+                  "value": {"number": 0.8}
+                },
+                {
+                  "target": {
+                    "node": {"property": "susceptibilityFactor"}
+                  },
+                  "operator": "*=",
+                  "value": {"number": 0.8}
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "target": {
+        "elementType": "node",
+        "scope": "local"
+      },
+      "sampling": {
+        "type": "absolute",
+        "number": 100,
+        "sampled": {
+          "foreach": [
+            {
+              "operations": [
+                {
+                  "target": {
+                    "node": {"property": "healthState"}
+                  },
+                  "operator": "=",
+                  "value": {"healthState": "E"}
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}]

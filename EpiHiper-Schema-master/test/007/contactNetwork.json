@@ -1,0 +1,62 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/networkSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/networkSchema.json",
+  "ann:label": "HAI v.0.0.1 Model custom Tick network",
+  "encoding": "text",
+  "accumulationTime": "24 hours",
+  "timeResolution": 86400,
+  "numberOfNodes": 11496,
+  "numberOfEdges": 4787694,
+  "sizeofPID": 8,
+  "sizeofActivity": 4,
+  "activityEncoding": {
+    "id": "activityTrait",
+    "features": [
+      {
+        "id": "activityType",
+        "default": "other",
+        "enums": [
+          {
+            "id": "home"
+          },
+          {
+            "id": "work"
+          },
+          {
+            "id": "shop"
+          },
+          {
+            "id": "other"
+          },
+          {
+            "id": "school"
+          },
+          {
+            "id": "college"
+          },
+          {
+            "id": "religion"
+          }
+        ]
+      }
+    ]
+  },
+  "sizeofEdgeTrait": 4,
+  "edgeTraitEncoding": {
+    "id": "edgeTrait",
+    "features": [
+      {
+        "id": "day",
+        "default": "0",
+        "enums": [
+          {
+            "id": "0"
+          }
+        ]
+      }
+    ]
+  },
+  "hasLocationIDField": true,
+  "hasActiveField": false,
+  "hasWeightField": false
+}]

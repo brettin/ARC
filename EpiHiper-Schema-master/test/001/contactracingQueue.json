@@ -1,0 +1,636 @@
+[{
+  "$schema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+  "epiHiperSchema": "https://raw.githubusercontent.com/NSSAC/EpiHiper-Schema/master/schema/interventionSchema.json",
+  "traits": [
+    {
+      "id": "nodeTrait",
+      "features": [
+        {
+          "id": "queue",
+          "enums": [
+            {
+              "id": "confirmedCase"
+            },
+            {
+              "id": "interviewedCase"
+            },
+            {
+              "id": "false"
+            }
+          ],
+          "default": "false"
+        },
+        {
+          "id": "called",
+          "enums": [
+            {
+              "id": "participate"
+            },
+            {
+              "id": "false"
+            }
+          ],
+          "default": "false"
+        }
+      ]
+    }
+  ],
+  "sets": [
+    {
+      "id": "confirmedCases",
+      "scope": "local",
+      "content": {
+        "elementType": "node",
+        "scope": "local",
+        "left": {
+          "node": {
+            "property": "nodeTrait",
+            "feature": "queue"
+          }
+        },
+        "operator": "==",
+        "right": {
+          "value": {
+            "trait": "nodeTrait",
+            "feature": "queue",
+            "enum": "confirmedCase"
+          }
+        }
+      }
+    },
+    {
+      "id": "interviewedCases",
+      "scope": "local",
+      "content": {
+        "elementType": "node",
+        "scope": "local",
+        "left": {
+          "node": {
+            "property": "nodeTrait",
+            "feature": "queue"
+          }
+        },
+        "operator": "==",
+        "right": {
+          "value": {
+            "trait": "nodeTrait",
+            "feature": "queue",
+            "enum": "interviewedCase"
+          }
+        }
+      }
+    },
+    {
+      "id": "edgesOfInterviewed",
+      "scope": "global",
+      "content": {
+        "elementType": "edge",
+        "scope": "global",
+        "operator": "withSourceNodeIn",
+        "selector": {
+          "set": {
+            "idRef": "interviewedCases"
+          }
+        }
+      }
+    },
+    {
+      "id": "contactsOfInteviewed",
+      "scope": "local",
+      "content": {
+        "elementType": "node",
+        "scope": "local",
+        "operator": "withIncomingEdgeIn",
+        "selector": {
+          "set": {
+            "idRef": "edgesOfInterviewed"
+          }
+        }
+      }
+    },
+    {
+      "id": "particpatingContacts",
+      "scope": "local",
+      "content": {
+        "elementType": "node",
+        "scope": "local",
+        "left": {
+          "node": {
+            "property": "nodeTrait",
+            "feature": "called"
+          }
+        },
+        "operator": "==",
+        "right": {
+          "value": {
+            "trait": "nodeTrait",
+            "feature": "called",
+            "enum": "participate"
+          }
+        }
+      }
+    },
+    {
+      "id": "edgesOfParticipatingContacts",
+      "scope": "global",
+      "content": {
+        "operation": "union",
+        "sets": [
+          {
+            "operation": "intersection",
+            "sets": [
+              {
+                "scope": "global",
+                "elementType": "edge",
+                "operator": "withSourceNodeIn",
+                "selector": {
+                  "set": {"idRef": "particpatingContacts"}
+                }
+              },
+              {
+                "set": {"idRef": "nomHomeSourceEdges"}
+              }
+            ]
+          },
+          {
+            "operation": "intersection",
+            "sets": [
+              {
+                "scope": "global",
+                "elementType": "edge",
+                "operator": "withTargetNodeIn",
+                "selector": {
+                  "set": {"idRef": "particpatingContacts"}
+                }
+              },
+              {
+                "set": {"idRef": "nomHomeTargetEdges"}
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "nomHomeTargetEdges",
+      "scope": "global",
+      "content": {
+        "elementType": "edge",
+        "scope": "local",
+        "left": {
+          "edge": {
+            "property": "targetActivity",
+            "feature": "activityType"
+          }
+        },
+        "operator": "!=",
+        "right": {
+          "value": {
+            "trait": "activityTrait",
+            "feature": "activityType",
+            "enum": "home"
+          }
+        }
+      }
+    },
+    {
+      "id": "nomHomeSourceEdges",
+      "scope": "global",
+      "content": {
+        "elementType": "edge",
+        "scope": "local",
+        "left": {
+          "edge": {
+            "property": "sourceActivity",
+            "feature": "activityType"
+          }
+        },
+        "operator": "!=",
+        "right": {
+          "value": {
+            "trait": "activityTrait",
+            "feature": "activityType",
+            "enum": "home"
+          }
+        }
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "ann:id": "confirmCase",
+      "trigger": {
+        "left": {
+          "sizeof": {
+            "set": {
+              "idRef": "enteredIsymp"
+            }
+          }
+        },
+        "operator": ">",
+        "right": {
+          "value": {
+            "number": 0
+          }
+        }
+      },
+      "interventionIds": [
+        "confirmCase"
+      ]
+    },
+    {
+      "ann:id": "interviewCase",
+      "trigger": {
+        "left": {
+          "sizeof": {
+            "set": {
+              "idRef": "confirmedCases"
+            }
+          }
+        },
+        "operator": ">",
+        "right": {
+          "value": {
+            "number": 0
+          }
+        }
+      },
+      "interventionIds": [
+        "interviewCase"
+      ]
+    },
+    {
+      "ann:id": "callContacts",
+      "trigger": {
+        "left": {
+          "sizeof": {
+            "set": {
+              "idRef": "contactsOfInteviewed"
+            }
+          }
+        },
+        "operator": ">",
+        "right": {
+          "value": {
+            "number": 0
+          }
+        }
+      },
+      "interventionIds": [
+        "callContacts"
+      ]
+    },
+    {
+      "ann:id": "quarantineParticipatingContacts",
+      "trigger": {
+        "left": {
+          "sizeof": {
+            "set": {
+              "idRef": "edgesOfParticipatingContacts"
+            }
+          }
+        },
+        "operator": ">",
+        "right": {
+          "value": {
+            "number": 0
+          }
+        }
+      },
+      "interventionIds": [
+        "quarantineParticipatingContacts"
+      ]
+    }
+  ],
+  "interventions": [
+    {
+      "id": "confirmCase",
+      "ann:description": "50% od symptomatic cases",
+      "target": {
+        "set": {
+          "idRef": "enteredIsymp"
+        }
+      },
+      "sampling": {
+        "type": "individual",
+        "percent": {
+          "number": 50
+        },
+        "sampled": {
+          "foreach": [
+            {
+              "priority": 10,
+              "operations": [
+                {
+                  "target": {
+                    "node": {
+                      "property": "nodeTrait",
+                      "feature": "queue"
+                    }
+                  },
+                  "operator": "=",
+                  "value": {
+                    "trait": "nodeTrait",
+                    "feature": "queue",
+                    "enum": "confirmedCase"
+                  }
+                }
+              ]
+            },
+            {
+              "delay": 1,
+              "priority": 10,
+              "operations": [
+                {
+                  "target": {
+                    "node": {
+                      "property": "nodeTrait",
+                      "feature": "queue"
+                    }
+                  },
+                  "operator": "=",
+                  "value": {
+                    "trait": "nodeTrait",
+                    "feature": "queue",
+                    "enum": "false"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "interviewCase",
+      "ann:description": "interview capacity F",
+      "target": {
+        "set": {
+          "idRef": "confirmedCases"
+        }
+      },
+      "sampling": {
+        "type": "absolute",
+        "number": 50,
+        "sampled": {
+          "foreach": [
+            {
+              "priority": 2,
+              "operations": [
+                {
+                  "target": {
+                    "node": {
+                      "property": "nodeTrait",
+                      "feature": "queue"
+                    }
+                  },
+                  "operator": "=",
+                  "value": {
+                    "trait": "nodeTrait",
+                    "feature": "queue",
+                    "enum": "interviewedCase"
+                  }
+                }
+              ]
+            },
+            {
+              "delay": 1,
+              "priority": 10,
+              "operations": [
+                {
+                  "target": {
+                    "node": {
+                      "property": "nodeTrait",
+                      "feature": "queue"
+                    }
+                  },
+                  "operator": "=",
+                  "value": {
+                    "trait": "nodeTrait",
+                    "feature": "queue",
+                    "enum": "false"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "interviewCase",
+      "ann:description": "contact with priority vector (Hα1, Hα2, Hα3) at day (1, 2, 3), catact person particpate with propability P",
+      "target": {
+        "set": {
+          "idRef": "contactsOfInteviewed"
+        }
+      },
+      "sampling": {
+        "type": "absolute",
+        "number": 50,
+        "sampled": {
+          "sampling": {
+            "type": "individual",
+            "number": 50,
+            "sampled": {
+              "foreach": [
+                {
+                  "priority": 1,
+                  "operations": [
+                    {
+                      "target": {
+                        "node": {
+                          "property": "nodeTrait",
+                          "feature": "called"
+                        }
+                      },
+                      "operator": "=",
+                      "value": {
+                        "trait": "nodeTrait",
+                        "feature": "called",
+                        "enum": "participate"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "delay": 1,
+                  "priority": 10,
+                  "operations": [
+                    {
+                      "target": {
+                        "node": {
+                          "property": "nodeTrait",
+                          "feature": "called"
+                        }
+                      },
+                      "operator": "=",
+                      "value": {
+                        "trait": "nodeTrait",
+                        "feature": "called",
+                        "enum": "false"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "nonsampled": {
+          "sampling": {
+            "type": "absolute",
+            "number": 50,
+            "sampled": {
+              "sampling": {
+                "type": "individual",
+                "number": 50,
+                "sampled": {
+                  "foreach": [
+                    {
+                      "priority": 1,
+                      "delay": 1,
+                      "operations": [
+                        {
+                          "target": {
+                            "node": {
+                              "property": "nodeTrait",
+                              "feature": "called"
+                            }
+                          },
+                          "operator": "=",
+                          "value": {
+                            "trait": "nodeTrait",
+                            "feature": "called",
+                            "enum": "participate"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "delay": 2,
+                      "priority": 10,
+                      "operations": [
+                        {
+                          "target": {
+                            "node": {
+                              "property": "nodeTrait",
+                              "feature": "called"
+                            }
+                          },
+                          "operator": "=",
+                          "value": {
+                            "trait": "nodeTrait",
+                            "feature": "called",
+                            "enum": "false"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "nonsampled": {
+              "sampling": {
+                "type": "absolute",
+                "number": 50,
+                "sampled": {
+                  "sampling": {
+                    "type": "individual",
+                    "number": 50,
+                    "sampled": {
+                      "foreach": [
+                        {
+                          "priority": 1,
+                          "delay": 2,
+                          "operations": [
+                            {
+                              "target": {
+                                "node": {
+                                  "property": "nodeTrait",
+                                  "feature": "called"
+                                }
+                              },
+                              "operator": "=",
+                              "value": {
+                                "trait": "nodeTrait",
+                                "feature": "called",
+                                "enum": "participate"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "delay": 3,
+                          "priority": 10,
+                          "operations": [
+                            {
+                              "target": {
+                                "node": {
+                                  "property": "nodeTrait",
+                                  "feature": "called"
+                                }
+                              },
+                              "operator": "=",
+                              "value": {
+                                "trait": "nodeTrait",
+                                "feature": "called",
+                                "enum": "false"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "quarantineParticipatingContacts",
+      "ann:description": "Quarantine for 14 days",
+      "target": {
+        "set": {"idRef": "quarantineParticipatingContacts"}
+      },
+      "foreach": [
+        {
+          "operations": [
+            {
+              "target": {
+                "edge": {
+                  "property": "weight"
+                }
+              },
+              "operator": "/=",
+              "value": {
+                "number": 100000
+              }
+            }
+          ]
+        },
+        {
+          "delay": 14,
+          "operations": [
+            {
+              "target": {
+                "edge": {
+                  "property": "weight"
+                }
+              },
+              "operator": "*=",
+              "value": {
+                "number": 100000
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": []
+}]
