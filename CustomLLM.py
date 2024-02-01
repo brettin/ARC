@@ -58,10 +58,10 @@ class ARGO_LLM(LLM):
         run_manager: Optional[CallbackManagerForLLMRun] = None,
         **kwargs: Any,
     ) -> str:
-        if stop is not None:
-            raise ValueError("stop kwargs are not permitted.")
+        #if stop is not None:
+        #    raise ValueError("stop kwargs are not permitted.")
 
-        response = _invoke_model("What are some common flaviviruses?")        
+        response = _invoke_model(prompt)        
         return response
 
     @property
