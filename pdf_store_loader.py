@@ -1,20 +1,16 @@
+import sys
 from langchain.document_loaders import PyPDFLoader
 from langchain.embeddings import HuggingFaceEmbeddings
-
 from os import listdir
 from os.path import isfile, join, dirname, realpath
 
+
 print(dirname(realpath(__file__)))
-from _util import _print
 
 
-t = _print('Start')
-
-mypath="pdfs"
+mypath=sys.args[1]  # directory containing pdf files
 onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 print(f'file_count: {len(onlyfiles)}')
-
-
 
 
 # This needs to run parallel
@@ -42,6 +38,4 @@ for pdf in onlyfiles:
 
 
 
-t = _print("Done loading documents", t)
-
-
+print("Done loading documents", t)
